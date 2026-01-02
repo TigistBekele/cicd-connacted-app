@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mycompany</groupId>
+	<groupId>a99fd6e8-4228-48ff-8a0b-2481d7fae3ea</groupId>
 	<artifactId>cicd-connacted-app</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
 	<name>cicd-connacted-app</name>
@@ -29,6 +29,24 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+          <classifier>mule-application</classifier>
+          <cloudhub2Deployment>
+            <uri>https://anypoint.mulesoft.com</uri>
+            <provider>MC</provider>
+            <environment>Sandbox</environment>
+            <target>Cloudhub-US-East-2</target>
+            <server>Repository</server>
+            <applicationName>${project.artifactId}</applicationName>
+            <releaseChannel>Edge</releaseChannel>
+            <muleVersion>4.10.1</muleVersion>
+            <replicas>1</replicas>
+            <vCores>0.1</vCores>
+            <deploymentSettings>
+              <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+            </deploymentSettings>
+          </cloudhub2Deployment>
+        </configuration>				
 			</plugin>
 		</plugins>
 	</build>
@@ -48,20 +66,27 @@
 		</dependency>
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>anypoint-exchange-v2</id>
-			<name>Anypoint Exchange</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>mulesoft-releases</id>
-			<name>MuleSoft Releases Repository</name>
-			<url>https://repository.mulesoft.org/releases/</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
+<repositories>
+    <repository>
+      <id>anypoint-exchange-v3</id>
+      <name>Anypoint Exchange</name>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+      <layout>default</layout>
+    </repository>
+    <repository>
+      <id>mulesoft-releases</id>
+      <name>MuleSoft Releases Repository</name>
+      <url>https://repository.mulesoft.org/releases/</url>
+      <layout>default</layout>
+    </repository>
+     <repository>
+      <id>Repository</id>
+      <name>Private Exchange repository</name>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -74,5 +99,12 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+		<distributionManagement>
+    <repository>
+      <id>Repository</id>
+      <name>Corporate Repository</name>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+    </repository>
+  </distributionManagement>
 
 </project>
